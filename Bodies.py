@@ -1,7 +1,7 @@
 import math
 from enum import Enum
 
-class WorkPiece():
+class Workpiece():
     # Modulus = modulus of elasticity (Pa)
     # Area, length given in SI units (m^2,m)
     def __init__(self,modulus,area,length):
@@ -9,12 +9,12 @@ class WorkPiece():
         self.area = area
         self.length = length
 
-class Rod(WorkPiece):
+class Rod(Workpiece):
     def __init__(self,modulus,radius,length):
         area = math.pi * (radius**2)
         super().__init__(modulus,area,length)
 
-class Prism(WorkPiece):
+class Prism(Workpiece):
     def __init__(self,modulus,width,length):
         area = width ** 2
         super().__init__(modulus,area,length)
