@@ -14,7 +14,7 @@ class Rod(Workpiece):
         area = math.pi * (radius**2)
         super().__init__(modulus,area,length)
 
-class Prism(Workpiece):
+class SquarePrism(Workpiece):
     def __init__(self,modulus,width,length):
         area = width ** 2
         super().__init__(modulus,area,length)
