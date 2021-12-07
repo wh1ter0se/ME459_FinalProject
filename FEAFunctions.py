@@ -23,7 +23,7 @@ def print_displacements(displacements,global_displacement=None):
 # Solves setup given EITHER force (N) or displacement (m)
 # Force and displacement are both numpy column vectors
 def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
-    coeff = (workpiece.area * workpiece.modulus) / workpiece.length # AE / L
+    coeff = (workpiece.area * workpiece.modulus) / workpiece.length # P = (AE / L)(delta)
     stiffness = (np.eye(2) * 2) - 1.0
     stiffness *= coeff
 
@@ -66,20 +66,57 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
     for i in range(nodes-1):
         if displacements[i] < 0:
             offset -= displacements[i]
-    #offset = displacements[0]
     #displacements += offset
-    displacements -= displacements[0]
+    offset = -displacements[0]
+    #displacements -= displacements[0]
+    #print(displacements)
+    #print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
+    for i in range(len(displacements)):
+        #print(i)
+        #if displacements[i] < 0 or sum(forces[i:]) != 0:
+            #print(str(i) + " is not zero")
+        displacements[i] += offset
+        #else:
+            #displacements[i] = 0
+        #if sum(forces[i:]) == 0:
+            #displacements[i] = 0
     print_forces(forces.T[0])
     print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
     
+def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
+    coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
+    stiffness = (np.eye(2) * 2) - 1.0
+    stiffness *= coeff
 
+    if displacement != None and force == None: # displacement is given, solve for force
+        displacement_col = np.array([0,displacement]).T # left side (ΔL_1) is pinned
+        force_col = np.matmul(stiffness,displacement_col) # B = Ax
+
+    if force != None and displacement == None: # force is given, solve for displacement
+        force_col = np.array([-force,force]).T # equal and opposite reaction force
+        # stiffness is a singular matrix, so the method of least squares is needed to solve
+        displacement_col = np.linalg.lstsq(stiffness,force_col)[0] 
+        total_displacement = abs(displacement_col[0])+abs(displacement_col[1])
+        displacement_col = np.array([0,total_displacement]).T # left side (ΔL_1) is pinned
+
+    if force == None and displacement == None:
+        print("No force/displacement given")
+        return
+
+    print_forces(force_col)
+    print_displacements(displacement_col)
 
 
 ## Function tests
 #  Results can be verified with
 #  https://www.omnicalculator.com/physics/stress
-piece = SquarePrism(Elasticity.ALUMINUM.value,.1,5.0)
+piece = SquarePrism(Elasticity.ALUMINUM.value,width=.1,length=5.0)
 #Solve_SimpleAxialTension(piece)
 #Solve_SimpleAxialTension(piece,displacement=.01)
-Solve_SimpleAxialTension(piece,force=50000)
-Solve_MultipleAxialTension(piece,[(10,50000)],10)
+
+# Solve_SimpleAxialTension(piece,force=50000)
+# Solve_MultipleAxialTension(piece,[(5,50000)],10)
+# Solve_MultipleAxialTension(piece,[(5,50000)],5)
+print(piece.I_xx)
+print(piece.modulus)
+Solve_SimpleCantileverDeflection(piece,displacement=.1)

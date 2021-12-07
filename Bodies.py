@@ -4,20 +4,26 @@ from enum import Enum
 class Workpiece():
     # Modulus = modulus of elasticity (Pa)
     # Area, length given in SI units (m^2,m)
-    def __init__(self,modulus,area,length):
+    def __init__(self,modulus,area,length,I_xx,I_yy):
         self.modulus = modulus
         self.area = area
         self.length = length
+        self.I_xx = I_xx
+        self.I_yy = I_yy
 
 class Rod(Workpiece):
     def __init__(self,modulus,radius,length):
         area = math.pi * (radius**2)
-        super().__init__(modulus,area,length)
+        I_xx = (math.pi * radius**2) / 16 # Ixx = (pi*D^2)/64
+        I_yy = I_xx
+        super().__init__(modulus,area,length,I_xx,I_yy)
 
 class SquarePrism(Workpiece):
     def __init__(self,modulus,width,length):
         area = width ** 2
-        super().__init__(modulus,area,length)
+        I_xx = (width**4) / 12 # Ixx = bh^3 / 12
+        I_yy = I_xx
+        super().__init__(modulus,area,length,I_xx,I_yy)
 
 # All elastic moduli given in Pa
 # (MPa = 10^6 Pa, GPa = 10^9 Pa)
