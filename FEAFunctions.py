@@ -18,7 +18,8 @@ def print_displacements(displacements,global_displacement=None):
         i += 1
     if global_displacement is not None:
         print("ΔL_global: " + str(round((10**3)*global_displacement,5)) + "mm")
-
+        
+    
 # This is from the first simple example
 # Solves setup given EITHER force (N) or displacement (m)
 # Force and displacement are both numpy column vectors
@@ -61,7 +62,7 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
         pos, force = pair
         forces[pos-1] += force
     forces[0] = -sum(forces)
-    displacements = np.linalg.lstsq(global_stiffness,forces)[0]
+    displacements = np.linalg.lstsq(global_stiffness,forces,rcond=None)[0]
     offset = 0
     for i in range(nodes-1):
         if displacements[i] < 0:
@@ -95,7 +96,7 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
     if force != None and displacement == None: # force is given, solve for displacement
         force_col = np.array([-force,force]).T # equal and opposite reaction force
         # stiffness is a singular matrix, so the method of least squares is needed to solve
-        displacement_col = np.linalg.lstsq(stiffness,force_col)[0] 
+        displacement_col = np.linalg.lstsq(stiffness,force_col,rcond=None)[0] 
         total_displacement = abs(displacement_col[0])+abs(displacement_col[1])
         displacement_col = np.array([0,total_displacement]).T # left side (ΔL_1) is pinned
 
@@ -106,17 +107,71 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
     print_forces(force_col)
     print_displacements(displacement_col)
 
+#reads txt file with input values and puts them into solver functions
+def read_input():
+    # readfile = input("Name of Input File: ")
+    readfile = "FEA_Inputs_SP_SCD.txt"
+    with open(readfile) as file:
+        data = file.readlines()
+    file.close()
+    inputs = []
+    for line in data:
+        index = line.find("=")
+        line = line[index+1:-1]
+        inputs.append(line)
+    part = inputs[0]
+    # length = inputs[1]
+    # diameter = inputs[2]
+    # width = inputs[3]
+    # base = inputs[4]
+    # height = inputs[5]
+    solver = inputs[6]
+    # material = inputs[7]
+    # force = inputs[8]
+    # displacement = inputs[9]
+    print(inputs[8])
+    print(inputs[9])
+    if inputs[8] == "0":
+        inputs[8] = None
+    else:
+        inputs[8] = float(inputs[8])
+    if inputs[9] == "0":
+        inputs[9] = None
+    else:
+        inputs[9] = float(0)
+    print("Thank You!\nCalculating...\n")
+    matstr = ("Elasticity." + inputs[7] + ".value")
+    if part == "RD":
+        piece = Rod(matstr,radius=(float(inputs[2])/2.0),length=float(inputs[1]))
+    elif part == "SP":
+        # piece = SquarePrism(matstr,width=float(inputs[3]),length=float(inputs[1]))
+        piece = SquarePrism(Elasticity.ALUMINUM.value,width=float(inputs[3]),length=float(inputs[1]))
+    elif part == "RP":
+        piece = RectangularPrism(matstr,base=float(inputs[4]),height=float(inputs[5]),length=float(inputs[1]))
+    else:
+        print("fail :(")
+    if solver == "SAT":
+        Solve_SimpleAxialTension(piece,force=inputs[8],displacement=inputs[9])
+    elif solver == "SAT":
+        print("In Progress..")
+        # Solve_MultipleAxialTension(piece,force=input6,displacement=input7)
+    else:
+        Solve_SimpleCantileverDeflection(piece,force=inputs[8],displacement=inputs[9])
 
+read_input()
 ## Function tests
 #  Results can be verified with
 #  https://www.omnicalculator.com/physics/stress
-piece = SquarePrism(Elasticity.ALUMINUM.value,width=.1,length=5.0)
+#  https://www.omnicalculator.com/construction/beam-deflection 
+
+# piece = SquarePrism(Elasticity.ALUMINUM.value,width=0.1,length=5)
+
 #Solve_SimpleAxialTension(piece)
 #Solve_SimpleAxialTension(piece,displacement=.01)
 
 # Solve_SimpleAxialTension(piece,force=50000)
 # Solve_MultipleAxialTension(piece,[(5,50000)],10)
 # Solve_MultipleAxialTension(piece,[(5,50000)],5)
-print(piece.I_xx)
-print(piece.modulus)
-Solve_SimpleCantileverDeflection(piece,displacement=.1)
+# print("test: " + str(piece.I_xx))
+# print("test 2: " + str(piece.modulus))
+# Solve_SimpleCantileverDeflection(piece,force=400,displacement=None)
