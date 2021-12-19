@@ -1,3 +1,5 @@
+from Bodies import *
+
 def generator():
     print("\n<< Finite Element Analysis Calculator Input Generator >>\n")
     print("Input workpiece type \nRD = Rod\nSP = Square Prism\nRP = Rectangular Prism")
@@ -62,7 +64,13 @@ def generator():
     if float(input7) == 0.0:
         input7 = " "
     print("Input material")
-    input8 = input(":")
+    while True:
+        input8 = input(":")
+        try:
+            testvar = getattr(Elasticity, input8)
+            break
+        except AttributeError:
+            print("Not valid input. Try again.")
     lines = []
     if input1 == "RD":  
         lines = ['type=' + input1, 'length=' + input2, 'diameter=' + input3, 'width=', 'base=', 'height=',

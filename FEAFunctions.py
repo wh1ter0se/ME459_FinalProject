@@ -113,6 +113,7 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
 
 #reads txt file with input values and puts them into solver functions
 def read_input():
+    print("<< Finite Element Analysis Calculator >>\nby Colton Kreischer and Griffin Robjohns\n")
     readfile = input("Name of Input File: ")
     with open(readfile) as file:
         data = file.readlines()
