@@ -97,7 +97,11 @@ def generator():
                 print("Not valid input. Try again.")
         if float(input7) == 0.0:
             input7 = " "
-    
+    if input6 == None:
+        input6 = ""
+    if input7 == None:
+        input7 = ""
+
     print("Input material")
     while True:
         input8 = input(":")
