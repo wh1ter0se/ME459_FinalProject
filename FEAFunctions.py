@@ -104,13 +104,16 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
         print("No force/displacement given")
         return
 
+    if force != None and displacement != None:
+        print("error in this function")
+        return
+
     print_forces(force_col)
     print_displacements(displacement_col)
 
 #reads txt file with input values and puts them into solver functions
 def read_input():
-    # readfile = input("Name of Input File: ")
-    readfile = "FEA_Inputs_SP_SCD.txt"
+    readfile = input("Name of Input File: ")
     with open(readfile) as file:
         data = file.readlines()
     file.close()
@@ -120,43 +123,38 @@ def read_input():
         line = line[index+1:-1]
         inputs.append(line)
     part = inputs[0]
-    # length = inputs[1]
-    # diameter = inputs[2]
-    # width = inputs[3]
-    # base = inputs[4]
-    # height = inputs[5]
+    length_i = inputs[1]
+    diameter_i = inputs[2]
+    width_i = inputs[3]
+    base_i = inputs[4]
+    height_i = inputs[5]
     solver = inputs[6]
-    # material = inputs[7]
-    # force = inputs[8]
-    # displacement = inputs[9]
-    print(inputs[8])
-    print(inputs[9])
-    if inputs[8] == "0":
-        inputs[8] = None
+    material_i = inputs[7]
+    force_i = inputs[8]
+    displacement_i = inputs[9]
+    if force_i == " ":
+        force_i = None
     else:
-        inputs[8] = float(inputs[8])
-    if inputs[9] == "0":
-        inputs[9] = None
+        force_i = float(force_i)
+    if displacement_i == " ":
+        displacement_i = None
     else:
-        inputs[9] = float(0)
+        displacement_i = float(displacement_i)
     print("Thank You!\nCalculating...\n")
-    matstr = ("Elasticity." + inputs[7] + ".value")
+    matstr = getattr(Elasticity, material_i)
     if part == "RD":
-        piece = Rod(matstr,radius=(float(inputs[2])/2.0),length=float(inputs[1]))
+        piece = Rod(matstr.value,radius=(float(diameter_i)/2.0),length=float(length_i))
     elif part == "SP":
-        # piece = SquarePrism(matstr,width=float(inputs[3]),length=float(inputs[1]))
-        piece = SquarePrism(Elasticity.ALUMINUM.value,width=float(inputs[3]),length=float(inputs[1]))
+        piece = SquarePrism(matstr.value,width=float(width_i),length=float(length_i))
     elif part == "RP":
-        piece = RectangularPrism(matstr,base=float(inputs[4]),height=float(inputs[5]),length=float(inputs[1]))
-    else:
-        print("fail :(")
+        piece = RectangularPrism(matstr.value,base=float(base_i),height=float(height_i),length=float(length_i))
     if solver == "SAT":
-        Solve_SimpleAxialTension(piece,force=inputs[8],displacement=inputs[9])
+        Solve_SimpleAxialTension(piece,force=force_i,displacement=displacement_i)
     elif solver == "SAT":
         print("In Progress..")
         # Solve_MultipleAxialTension(piece,force=input6,displacement=input7)
-    else:
-        Solve_SimpleCantileverDeflection(piece,force=inputs[8],displacement=inputs[9])
+    elif solver == "SCD":
+        Solve_SimpleCantileverDeflection(piece,force=force_i,displacement=displacement_i)
 
 read_input()
 ## Function tests
