@@ -1,5 +1,6 @@
 import FEAFunctions as FEA
 import Bodies
+import GraphingUtils as gu
 
 # Either retrieves a modulus of elasticity from the list of known materials
 # or gets a custom value from user input
@@ -70,9 +71,10 @@ def run_FEA_func(func,workpiece):
             choice = float(input('Enter a force (N) or 0 to finish entering force-position pairs: '))
             if choice != 0:
                 force = choice
-                pos = float(input('Enter node position for force (1-' + str(nodes) + ')'))
+                pos = int(input('Enter node position for force (1-' + str(nodes) + ')'))
                 pos_force_pairs.append((pos,force))
-        func(workpiece,pos_force_pairs,nodes)
+        print('') # line break
+        func_data = func(workpiece,pos_force_pairs,nodes)
     elif ('force' in func_args) and ('displacement' in func_args): # single-load function, force OR displacement
         print('This function can be driven by either a known force or a known displacement.')
         print('1) Force')
@@ -81,11 +83,28 @@ def run_FEA_func(func,workpiece):
         if choice == 1:
             print('Positive force correlates with tension')
             force = float(input('Force (N): '))
-            func(workpiece,force=force)
+            print('') # line break
+            func_data = func(workpiece,force=force)
         else:
             print('Positive displacement correlates with tension')
             displacement = float(input('Displacement (m): '))
-            func(workpiece,displacement=displacement)
+            print('') # line break
+            func_data = func(workpiece,displacement=displacement)
+    plot_func_data(func_data)
+
+def plot_func_data(func_data):
+    choice = -1
+    while choice != 0:
+        print('0) Exit')
+        print('1) Force')
+        print('2) Displacement')
+        print('3) Stress') # TODO implement
+        print('4) Strain') # TODO implement
+        choice = int(input('Select a graph to plot or 0 to exit.'))
+        if choice == 1: # force
+            gu.graph_forces(func_data[0])
+        if choice == 2: # displacement
+            gu.graph_displacements(func_data[1])
 
 def main():
     chosen_piece = get_workpiece()

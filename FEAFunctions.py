@@ -62,6 +62,7 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
     print_forces(force_col)
     print_displacements(displacement_col)
     # TODO add a function to print stress/strain
+    return [force_col,displacement_col]
 
 # Allows you to solve for local/global displacement, given pairs of locations and forces.
 # The area is assumed to be the same along the entire piece.
@@ -101,6 +102,7 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
     print_forces(forces.T[0])
     print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
     # TODO add a function to print stress/strain
+    return [forces.T[0],displacements.T[0]]
     
 # Solves for cantilever deflection (fixed at one end, free at the other)
 # Displacement is perpendicular rather than parallel (as in tension)
@@ -132,6 +134,7 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
     print_forces(force_col)
     print_displacements(displacement_col)
     # TODO add a function to print stress/strain
+    return [force_col,displacement_col]
 
 def Solve_SimpleAxialTorsion(workpiece,torque=None,rad_displacement=None):
     #coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
