@@ -19,7 +19,6 @@ def print_displacements(displacements,global_displacement=None):
     if global_displacement is not None:
         print("ΔL_global: " + str(round((10**3)*global_displacement,5)) + "mm")
         
-    
 # This is from the first simple example
 # Solves setup given EITHER force (N) or displacement (m)
 # Force and displacement are both numpy column vectors
@@ -84,6 +83,9 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
     print_forces(forces.T[0])
     print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
     
+# Solves for cantilever deflection (fixed at one end, free at the other)
+# Displacement is perpendicular rather than parallel (as in tension)
+# All forces/displacements are on the free end
 def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
     coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
     stiffness = (np.eye(2) * 2) - 1.0
@@ -111,7 +113,7 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
     print_forces(force_col)
     print_displacements(displacement_col)
 
-#reads txt file with input values and puts them into solver functions
+# Reads txt file with input values and puts them into solver functions
 def read_input():
     print("\n<< Finite Element Analysis Calculator >>\nby Colton Kreischer and Griffin Robjohns\n")
     readfile = input("Name of Input File: ")
