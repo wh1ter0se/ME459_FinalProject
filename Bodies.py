@@ -25,6 +25,13 @@ class SquarePrism(Workpiece):
         I_yy = I_xx
         super().__init__(modulus,area,length,I_xx,I_yy)
 
+class RectangularPrism(Workpiece):
+    def __init__(self,modulus,base,height,length):
+        area = base * height
+        I_xx = (base * (height**3)) / 12 # Ixx = bh^3 / 12
+        I_yy = (height * (base**3)) / 12 # Iyy = hb^3 / 12
+        super().__init__(modulus,area,length,I_xx,I_yy)
+
 # All elastic moduli given in Pa
 # (MPa = 10^6 Pa, GPa = 10^9 Pa)
 class Elasticity(Enum):
