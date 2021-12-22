@@ -34,7 +34,7 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
     if force != None and displacement == None: # force is given, solve for displacement
         force_col = np.array([-force,force]).T # equal and opposite reaction force
         # stiffness is a singular matrix, so the method of least squares is needed to solve
-        displacement_col = np.linalg.lstsq(stiffness,force_col)[0] 
+        displacement_col = np.linalg.lstsq(stiffness,force_col,rcond=None)[0] 
         total_displacement = abs(displacement_col[0])+abs(displacement_col[1])
         displacement_col = np.array([0,total_displacement]).T # left side (ΔL_1) is pinned
 
