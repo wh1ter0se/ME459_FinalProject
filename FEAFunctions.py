@@ -114,9 +114,12 @@ piece = SquarePrism(Elasticity.ALUMINUM.value,width=.1,length=5.0)
 #Solve_SimpleAxialTension(piece)
 #Solve_SimpleAxialTension(piece,displacement=.01)
 
-# Solve_SimpleAxialTension(piece,force=50000)
-# Solve_MultipleAxialTension(piece,[(5,50000)],10)
-# Solve_MultipleAxialTension(piece,[(5,50000)],5)
-print(piece.I_xx)
-print(piece.modulus)
-Solve_SimpleCantileverDeflection(piece,displacement=.1)
+#Solve_SimpleAxialTension(piece,force=50000)
+#Solve_MultipleAxialTension(piece,[(5,50000)],10)
+#Solve_MultipleAxialTension(piece,[(5,50000)],5)
+
+funcs = [Solve_SimpleAxialTension,
+         Solve_MultipleAxialTension,
+         Solve_SimpleCantileverDeflection]
+
+# Solve_SimpleCantileverDeflection(piece,displacement=.1)
