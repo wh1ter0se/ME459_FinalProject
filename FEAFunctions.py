@@ -9,16 +9,28 @@ import math
 def print_forces(forces):
     i = 0
     for force in forces:
-        print("F_" + str(i+1) + ": " + str(round(forces[i],5)) + "N")
+        print("F_" + str(i+1) + ": " + str(round(force,5)) + "N")
         i += 1
 
 def print_displacements(displacements,global_displacement=None):
     i = 0
     for displacement in displacements:
-        print("ΔL_" + str(i+1) + ": " + str(round((10**3)*displacements[i],5)) + "mm")
+        print("ΔL_" + str(i+1) + ": " + str(round((10**3)*displacement,5)) + "mm")
         i += 1
     if global_displacement is not None:
         print("ΔL_global: " + str(round((10**3)*global_displacement,5)) + "mm")
+
+def print_strains(strains):
+    i = 0
+    for strain in strains:
+        print("F_" + str(i+1) + ": " + str(round(strain,5)))
+        i += 1
+
+def print_stress(stress):
+    i = 0
+    for s in stress:
+        print("F_" + str(i+1) + ": " + str(round((10**6)*s,5)) + "MPa")
+        i += 1
 
 def rad_to_deg(radians):
     return (radians * (180/math.pi))
@@ -26,10 +38,16 @@ def rad_to_deg(radians):
 def print_radial_displacements(displacements,global_displacement=None):
     i = 0
     for displacement in displacements:
-        print("Δθ_" + str(i+1) + ": " + str(round((10**3)*displacements[i],5)) + "degrees")
+        print("Δθ_" + str(i+1) + ": " + str(round((10**3)*displacement,5)) + "degrees")
         i += 1
     if global_displacement is not None:
         print("Δθ_global: " + str(round((10**3)*global_displacement,5)) + "degrees")
+
+def disp_to_strain(displacement,length):
+    return displacement / length
+
+def strain_to_stress(stress,modulus):
+    return stress * modulus
 
 # TODO add a function to convert displacements to strain (will require workpiece length to calculate)
 # TODO add a function to convert strain to stress (will require Young's Modulus to calculate)
@@ -61,8 +79,9 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
 
     print_forces(force_col)
     print_displacements(displacement_col)
-    # TODO add a function to print stress/strain
-    return [force_col,displacement_col]
+    strain = disp_to_strain(displacement_col,workpiece.length)
+    stress = strain_to_stress(strain,workpiece.modulus)
+    return [force_col,displacement_col,strain,stress]
 
 # Allows you to solve for local/global displacement, given pairs of locations and forces.
 # The area is assumed to be the same along the entire piece.
@@ -102,7 +121,9 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
     print_forces(forces.T[0])
     print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
     # TODO add a function to print stress/strain
-    return [forces.T[0],displacements.T[0]]
+    strain = disp_to_strain(displacements.T[0],workpiece.length)
+    stress = strain_to_stress(strain,workpiece.modulus)
+    return [forces.T[0],displacements.T[0],strain,stress]
     
 # Solves for cantilever deflection (fixed at one end, free at the other)
 # Displacement is perpendicular rather than parallel (as in tension)
@@ -133,14 +154,16 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
 
     print_forces(force_col)
     print_displacements(displacement_col)
-    # TODO add a function to print stress/strain
-    return [force_col,displacement_col]
+    strain = disp_to_strain(displacement_col,workpiece.length)
+    stress = strain_to_stress(strain,workpiece.modulus)
+    return [force_col,displacement_col,strain,stress]
 
 def Solve_SimpleAxialTorsion(workpiece,torque=None,rad_displacement=None):
     #coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
     # TODO calculate the correct coefficient for axial displacement due to torque
     #      this might require adding another enum in Bodies for shear modulus
     #      it would also probably require calculating J (second polar moment of inertia)
+    #      this may or may not be worth implementing, I'm not sure. it might take too much time.
     stiffness = (np.eye(2) * 2) - 1.0
     stiffness *= coeff
 

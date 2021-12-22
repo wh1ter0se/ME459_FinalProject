@@ -90,21 +90,7 @@ def run_FEA_func(func,workpiece):
             displacement = float(input('Displacement (m): '))
             print('') # line break
             func_data = func(workpiece,displacement=displacement)
-    plot_func_data(func_data)
-
-def plot_func_data(func_data):
-    choice = -1
-    while choice != 0:
-        print('0) Exit')
-        print('1) Force')
-        print('2) Displacement')
-        print('3) Stress') # TODO implement
-        print('4) Strain') # TODO implement
-        choice = int(input('Select a graph to plot or 0 to exit.'))
-        if choice == 1: # force
-            gu.graph_forces(func_data[0])
-        if choice == 2: # displacement
-            gu.graph_displacements(func_data[1])
+    gu.plot_func_data(func_data)
 
 def main():
     chosen_piece = get_workpiece()
