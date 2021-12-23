@@ -29,13 +29,10 @@ def get_workpiece():
         i += 1
     choice = int(input('Select workpiece type ID: ')) - 1 # have user select workpiece type
     piecetype = Bodies.piecetypes[choice]
-    # init_func = piecetype.__init__
-    # func_args = init_func.__code__.co_varnames[:init_func.__code__.co_argcount] # get function arguments
-    # func_args = func_args [1:-1] # remove self and length from list
 
     modulus = get_modulus()
-    length = float(input('Length (m): '))   # TODO find a way to do this without if-statements
-    if piecetype == Bodies.Rod:
+    length = float(input('Length (m): '))
+    if piecetype == Bodies.Rod: # ask user for radius, width, or base and height depending on workpiece type
         radius = float(input('Radius (m): '))
         workpiece = Bodies.Rod(modulus,radius,length)
     if piecetype == Bodies.SquarePrism:
@@ -82,16 +79,17 @@ def run_FEA_func(func,workpiece):
         choice = int(input('Select option: '))
         if choice == 1:
             print('Positive force correlates with tension')
-            force = float(input('Force (N): '))
+            force = float(input('Force (N): ')) # user inputs force value
             print('') # line break
             func_data = func(workpiece,force=force)
         else:
             print('Positive displacement correlates with tension')
-            displacement = float(input('Displacement (m): '))
+            displacement = float(input('Displacement (m): ')) # user inputs displacement value
             print('') # line break
             func_data = func(workpiece,displacement=displacement)
     gu.plot_func_data(func_data)
 
+# print a summary of chosen  and calculated values for the workpiece
 def main():
     chosen_piece = get_workpiece()
     print('\n-----------------------')
@@ -103,5 +101,3 @@ def main():
     run_FEA_func(chosen_func,chosen_piece)
     
 main()
-
-#elif ('displacement' in func_args) and ('')
