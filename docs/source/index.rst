@@ -201,8 +201,23 @@ main()
 FileInterface.py
 ==================
 
+read_input()
+-------------
+
+   Takes the name of a .txt file as an input, and reads the lines of the file.
+   Creates variables to be entered into FEA functions to solve.
+   
+   Returns:
+      * Solved FEA function values for .txt input values.
+
 InputGenerator.py
 ==================
+
+generator()
+------------
+
+   Asks the user for a series of inputs regarding desired values to solve.
+   Writes a .txt file with the inputs laid out in an organized list that is easy to read.
 
 GraphingUtils.py
 =================
