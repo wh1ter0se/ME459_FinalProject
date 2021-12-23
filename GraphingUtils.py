@@ -12,9 +12,10 @@ def graph_forces(data):
 def graph_displacements(data):
     for i in reversed(range(len(data))):
         data[i] += sum(data[:i])
+    data *= 10**3 # convert m to mm
     xx = np.arange(len(data))
     plt.xlabel('Node')
-    plt.ylabel('Displacement (m)')
+    plt.ylabel('Displacement (mm)')
     plt.title('Global Displacement')
     plt.plot(xx, data)
     plt.show()

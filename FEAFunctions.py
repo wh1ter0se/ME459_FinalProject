@@ -107,14 +107,13 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes,verbose=True):
             offset -= displacements[i]
     #displacements += offset
     offset = -displacements[0]
+    displacements += offset
     #displacements -= displacements[0]
-    #print(displacements)
-    #print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
-    for i in range(len(displacements)):
+    #for i in range(len(displacements)):
         #print(i)
         #if displacements[i] < 0 or sum(forces[i:]) != 0:
             #print(str(i) + " is not zero")
-        displacements[i] += offset
+        #displacements[i] += offset
         #else:
             #displacements[i] = 0
         #if sum(forces[i:]) == 0:
