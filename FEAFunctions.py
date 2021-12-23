@@ -88,7 +88,7 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None,verbose=True
 # The area is assumed to be the same along the entire piece.
 # force_pos_pairs is an array of (node,force) tuples. Positive force = tension.
 def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes,verbose=True):
-    node_length = workpiece.length / (nodes*(.5*(nodes-1))) # why does this line work? couldn't tell you.
+    node_length = workpiece.length / (nodes*(.5*(nodes-1)))
     coeff = (workpiece.area * workpiece.modulus) / node_length
     local_stiffness = (np.eye(2) * 2) - 1.0
     local_stiffness *= coeff
@@ -105,23 +105,11 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes,verbose=True):
     for i in range(nodes-1):
         if displacements[i] < 0:
             offset -= displacements[i]
-    #displacements += offset
     offset = -displacements[0]
     displacements += offset
-    #displacements -= displacements[0]
-    #for i in range(len(displacements)):
-        #print(i)
-        #if displacements[i] < 0 or sum(forces[i:]) != 0:
-            #print(str(i) + " is not zero")
-        #displacements[i] += offset
-        #else:
-            #displacements[i] = 0
-        #if sum(forces[i:]) == 0:
-            #displacements[i] = 0
     if verbose:
         print_forces(forces.T[0])
         print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
-    # TODO add a function to print stress/strain
     strain = disp_to_strain(displacements.T[0],workpiece.length)
     stress = strain_to_stress(strain,workpiece.modulus)
     return [forces.T[0],displacements.T[0],strain,stress]

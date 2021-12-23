@@ -6,8 +6,8 @@ import Bodies
 # as opposed to live interface, which is dynamic
 def read_input():
     print("\n<< Finite Element Analysis Calculator >>\nby Colton Kreischer and Griffin Robjohns\n")
-    readfile = input("Name of Input File: ") #ask for file name
-    with open(readfile) as file: #open named file
+    readfile = input("Name of Input File: ") # ask for file name
+    with open(readfile) as file: # open named file
         data = file.readlines()
     file.close()
     inputs = []
@@ -24,17 +24,16 @@ def read_input():
     base_i = inputs[4]
     height_i = inputs[5]
     solver = inputs[6]
-    # if solver == "MAT":
-    #     nodes = inputs[8].count(",") + 1 
-    #     for nodes in inputs[8]:
-    #         ind = inputs[8].find(",")
-    #         add = inputs[8][0:ind]
-    #         inputs[8].replace(add, "")
-    #         node_forces.append(add)
-    #     force_i = node_forces
-    # else:
-    force_i = inputs[8]
-    # print(force_i)
+    if solver == "MAT":
+        nodes = inputs[8].count(",") + 1 
+        for nodes in inputs[8]:
+            ind = inputs[8].find(",")
+            add = inputs[8][0:ind]
+            inputs[8].replace(add, "")
+            node_forces.append(add)
+        force_i = node_forces
+    else:
+        force_i = inputs[8]
     material_i = inputs[7]
     displacement_i = inputs[9]
     # if solver == "MAT":

@@ -60,7 +60,7 @@ def generator():
             except ValueError:
                 print("Not valid input. Try again.")
     
-    # ask for Solver type
+    # ask for solver type
     print("Input calculator type \nSAT = Simple Axial Tension")
     print("MAT = Multiple Axial Tension\nSCD = Simple Cantilever Deflection")
     while True:
