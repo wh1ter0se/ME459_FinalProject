@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# TODO make x axis a range of the workpiece length, rather than 0 to 1 m
+
 def graph_data(data):
     xx = np.arange(len(data))
     plt.plot(xx, data)
@@ -10,6 +12,7 @@ def graph_forces(data):
     xx = np.arange(len(data))
     plt.xlabel('x (m)')
     plt.ylabel('Force (N)')
+    plt.title('Force')
     plt.plot(xx, data)
     plt.show()
     
@@ -27,6 +30,7 @@ def graph_strains(data):
     xx = np.arange(len(data))
     plt.xlabel('x (m)')
     plt.ylabel('Strain')
+    plt.title('Strain')
     plt.plot(xx, data)
     plt.show()
 
@@ -35,6 +39,7 @@ def graph_stress(data):
     data *= 10**6 # Pa to MPa
     plt.xlabel('x (m)')
     plt.ylabel('Stress (MPa)')
+    plt.title('Stress')
     plt.plot(xx, data)
     plt.show()
 

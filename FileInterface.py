@@ -11,7 +11,7 @@ def read_input():
         data = file.readlines()
     file.close()
     inputs = []
-
+    node_forces = []
     # takes each line of txt file and returns inputs as variables
     for line in data:
         index = line.find("=")
@@ -24,11 +24,24 @@ def read_input():
     base_i = inputs[4]
     height_i = inputs[5]
     solver = inputs[6]
-    material_i = inputs[7]
+    # if solver == "MAT":
+    #     nodes = inputs[8].count(",") + 1 
+    #     for nodes in inputs[8]:
+    #         ind = inputs[8].find(",")
+    #         add = inputs[8][0:ind]
+    #         inputs[8].replace(add, "")
+    #         node_forces.append(add)
+    #     force_i = node_forces
+    # else:
     force_i = inputs[8]
+    # print(force_i)
+    material_i = inputs[7]
     displacement_i = inputs[9]
-    len(force_i)
-    len(displacement_i)
+    # if solver == "MAT":
+    #     x = 0
+    #     for x in force_i:
+    #         force_i[x] = float(force_i[x])
+    # else:
     if len(force_i) > 1:
         force_i = float(force_i)
     else:
@@ -49,9 +62,9 @@ def read_input():
         piece = Bodies.RectangularPrism(matstr.value,base=float(base_i),height=float(height_i),length=float(length_i))
     if solver == "SAT":
         FEA.Solve_SimpleAxialTension(piece,force=force_i,displacement=displacement_i)
-    elif solver == "SAT":
-        print("In Progress..")
-        # Solve_MultipleAxialTension(piece,force=input6,displacement=input7)
+    elif solver == "MAT":
+        print("In Progress...")
+        # FEA.Solve_MultipleAxialTension(piece,force=force_i,displacement=displacement_i)
     elif solver == "SCD":
         FEA.Solve_SimpleCantileverDeflection(piece,force=force_i,displacement=displacement_i)
 

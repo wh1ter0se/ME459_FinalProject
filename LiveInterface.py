@@ -71,7 +71,7 @@ def run_FEA_func(func,workpiece):
             choice = float(input('Enter a force (N) or 0 to finish entering force-position pairs: '))
             if choice != 0:
                 force = choice
-                pos = int(input('Enter node position for force (1-' + str(nodes) + ')'))
+                pos = int(input('Enter node position for force (1-' + str(nodes) + '):'))
                 pos_force_pairs.append((pos,force))
         print('') # line break
         func_data = func(workpiece,pos_force_pairs,nodes)

@@ -48,9 +48,6 @@ def disp_to_strain(displacement,length):
 
 def strain_to_stress(stress,modulus):
     return stress * modulus
-
-# TODO add a function to convert displacements to strain (will require workpiece length to calculate)
-# TODO add a function to convert strain to stress (will require Young's Modulus to calculate)
     
 # This is from the first simple example
 # Solves setup given EITHER force (N) or displacement (m)
@@ -75,6 +72,10 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
 
     if force == None and displacement == None:
         print("No force/displacement given")
+        return
+
+    if force != None and displacement != None:
+        print("Too many inputs given")
         return
 
     print_forces(force_col)

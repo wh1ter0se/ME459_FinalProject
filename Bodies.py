@@ -35,6 +35,7 @@ class SquarePrism(Workpiece):
         area = width ** 2
         I_xx = (width**4) / 12 # Ixx = bh^3 / 12
         I_yy = I_xx
+        self.width = width
         super().__init__(modulus,area,length,I_xx,I_yy)
 
     def summary(self):
@@ -47,6 +48,8 @@ class RectangularPrism(Workpiece):
         area = base * height
         I_xx = (base * (height**3)) / 12 # Ixx = bh^3 / 12
         I_yy = (height * (base**3)) / 12 # Iyy = hb^3 / 12
+        self.base = base
+        self.height = height
         super().__init__(modulus,area,length,I_xx,I_yy)
 
     def summary(self):
