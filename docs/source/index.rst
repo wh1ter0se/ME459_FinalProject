@@ -194,7 +194,7 @@ run_FEA_func()
 main()
 -------
 
-   Runs the live interface when the file is run.
+   Runs the live interface.
 
 
 
@@ -204,6 +204,56 @@ FileInterface.py
 GraphingUtils.py
 =================
 
+graph_forces()
+---------------
+
+   Plots the force at each node.
+
+   Args:
+      * data: list of forces by each node
+
+graph_displacements()
+----------------------
+
+   Plots the global displacement at each node.
+
+   Args:
+      * data: list of local displacements at each node.
+
+graph_strains()
+----------------
+
+   Plots the strain at each node.
+
+   Args:
+      * data: list of strains at each node.
+
+graph_stress()
+---------------
+
+   Plots the stress at each node.
+
+   Args:
+      * data: list of stresses at each node.
+
+plot_func_data()
+-----------------
+
+   Given a list of all 4 datatypes, allows the user to open graphs for any dataset until closing the program.
+
+   Args:
+      * data: A list of 4 lists of data in the order [force, displacement, strain, stress]
+
+graph_timing()
+---------------
+
+   Plots the runtimes in ms and the node counts used for a performance test.
+
+   Args:
+      * n_list: list of all node counts used in the test
+      * time_list: list of corresponding function runtimes (ms)
+
+      
 PerformanceTest.py
 ===================
 
