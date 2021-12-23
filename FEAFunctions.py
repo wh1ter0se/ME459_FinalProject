@@ -53,6 +53,22 @@ def strain_to_stress(stress,modulus):
 # Solves setup given EITHER force (N) or displacement (m)
 # Force and displacement are both numpy column vectors
 def Solve_SimpleAxialTension(workpiece,force=None,displacement=None,verbose=True):
+    """
+    This is from the first simple example.
+    It solves setup given EITHER force (N) or displacement (m).
+    Force and displacement are both numpy column vectors.
+    Positive values correlate with tension.
+
+    Args:
+        workpiece: The workpiece object storing object parameters to be tested
+        force: The force on the unfixed end in Newtons (optional)
+        displacement: The axial displacement on the unfixed end in Meters (optional)
+        verbose: True if data should be printed (default true)
+
+    Returns:
+        List of data columns in the following order:
+        [force, displacement, strain, stress]
+    """
     coeff = (workpiece.area * workpiece.modulus) / workpiece.length # P = (AE / L)(delta)
     stiffness = (np.eye(2) * 2) - 1.0
     stiffness *= coeff
