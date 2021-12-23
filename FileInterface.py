@@ -2,13 +2,17 @@ import FEAFunctions as FEA
 import Bodies
 
 # Reads txt file with input values and puts them into solver functions
+# used to save certain/specific inputs scenarios, better for bigger/long-time input calculations
+# as opposed to live interface, which is dynamic
 def read_input():
     print("\n<< Finite Element Analysis Calculator >>\nby Colton Kreischer and Griffin Robjohns\n")
-    readfile = input("Name of Input File: ")
-    with open(readfile) as file:
+    readfile = input("Name of Input File: ") #ask for file name
+    with open(readfile) as file: #open named file
         data = file.readlines()
     file.close()
     inputs = []
+
+    # takes each line of txt file and returns inputs as variables
     for line in data:
         index = line.find("=")
         line = line[index+1:-1]
@@ -33,7 +37,8 @@ def read_input():
         displacement_i = float(displacement_i)
     else:
         displacement_i = None
-        
+    
+    # execute solvers based on inputs
     print("Thank You!\nCalculating...\n")
     matstr = getattr(Bodies.Elasticity, material_i)
     if part == "RD":

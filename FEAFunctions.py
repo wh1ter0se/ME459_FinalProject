@@ -165,7 +165,7 @@ def Solve_SimpleAxialTorsion(workpiece,torque=None,rad_displacement=None):
     #      it would also probably require calculating J (second polar moment of inertia)
     #      this may or may not be worth implementing, I'm not sure. it might take too much time.
     stiffness = (np.eye(2) * 2) - 1.0
-    stiffness *= coeff
+    # stiffness *= coeff
 
     if rad_displacement != None and torque == None: # displacement is given, solve for torque
         rad_displacement_col = np.array([0,rad_displacement]).T # left side (Δθ_1) is pinned

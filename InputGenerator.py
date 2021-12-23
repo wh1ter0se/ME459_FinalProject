@@ -1,7 +1,13 @@
 from Bodies import *
 
+# generator is completely robust and does not fail even when illogical values are inputted
+# used to generate scenario for multiple calculation in solvers
+# can make smaller adjustments in txt file faster than creating new scenario for each run
+
 def generator():
     print("\n<< Finite Element Analysis Calculator Input Generator >>\n")
+
+    # ask for piece type
     print("Input workpiece type \nRD = Rod\nSP = Square Prism\nRP = Rectangular Prism")
     while True:
         input1 = input(":")
@@ -11,6 +17,7 @@ def generator():
         else:
             print("Not valid input. Try again.")
     
+    # ask for piece length
     print("Input length (m) [cannot exceed 1000 meters]")
     while True:
         try:
@@ -22,6 +29,7 @@ def generator():
         except ValueError:
             print("Not valid input. Try again.")
     
+    # ask for diameter/width/depending on piece type
     if input1 == "RD":
         input3str = "diameter"
     elif input1 == "SP":
@@ -38,6 +46,8 @@ def generator():
                 print("Not valid input. Try again.")
         except ValueError:
             print("Not valid input. Try again.")
+
+    # ask for height if needed
     if input1 == "RP":
         print("Input height (m) [cannot exceed 1000 meters]")
         while True:
@@ -50,6 +60,7 @@ def generator():
             except ValueError:
                 print("Not valid input. Try again.")
     
+    # ask for Solver type
     print("Input calculator type \nSAT = Simple Axial Tension")
     print("MAT = Multiple Axial Tension\nSCD = Simple Cantilever Deflection")
     while True:
@@ -60,6 +71,7 @@ def generator():
         else:
             print("Not valid input. Try again.")
 
+    # ask for force or displacement
     print("Input input type \nF = Force\nD = Displacement")
     while True:
         input5a = input(":")
@@ -69,6 +81,8 @@ def generator():
         else:
             print("Not valid input. Try again.")
 
+    # ask for force or displacement values
+    # if "F" entered then ask for force, if "D" entered then ask for displacement
     input6 = None
     input7 = None
     if input5a == "F":
@@ -102,6 +116,7 @@ def generator():
     if input7 == None:
         input7 = ""
 
+    #ask for material
     print("Input material")
     while True:
         input8 = input(":")
@@ -112,6 +127,7 @@ def generator():
         except AttributeError:
             print("Not valid input. Try again.")
     
+    # set array based on input variables
     lines = []
     if input1 == "RD":  
         lines = ['type=' + input1, 'length=' + input2, 'diameter=' + input3, 'width=', 'base=', 'height=',
@@ -123,6 +139,7 @@ def generator():
         lines = ['type=' + input1, 'length=' + input2, 'diameter=', 'width=', 'base=' + input3, 'height=' + input4,
         'solver=' + input5, 'material=' + input8, 'forces=' + input6, 'displacement=' + input7]
     
+    # write txt file with input array
     with open('FEA_Inputs_' + input1 + '_' + input5 + '.txt', 'w') as file:
         for line in lines:
             file.write(line)

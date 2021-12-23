@@ -37,10 +37,10 @@ class SquarePrism(Workpiece):
         I_yy = I_xx
         super().__init__(modulus,area,length,I_xx,I_yy)
 
-    # TODO implement unique summary
-    #def summary(self):
-    #    super().summary()
-    # print all parameters unique to this piece type
+    def summary(self):
+       super().summary()
+       print('Width (m): ' + str(self.width))
+
 
 class RectangularPrism(Workpiece):
     def __init__(self,modulus,base,height,length,*args):
@@ -49,10 +49,10 @@ class RectangularPrism(Workpiece):
         I_yy = (height * (base**3)) / 12 # Iyy = hb^3 / 12
         super().__init__(modulus,area,length,I_xx,I_yy)
 
-    # TODO implement unique summary
-    #def summary(self):
-    #    super().summary()
-    # print all parameters unique to this piece type
+    def summary(self):
+       super().summary()
+       print('Base (m): ' + str(self.base))
+       print('Height (m): ' + str(self.height))
 
 # All elastic moduli given in Pa
 # (MPa = 10^6 Pa, GPa = 10^9 Pa)

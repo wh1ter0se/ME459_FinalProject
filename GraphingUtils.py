@@ -47,7 +47,7 @@ def plot_func_data(func_data):
         print('2) Displacement')
         print('3) Strain') # TODO implement
         print('4) Stress') # TODO implement
-        choice = int(input('Select a graph to plot or 0 to exit.'))
+        choice = int(input('Select a graph to plot or 0 to exit:'))
         if choice == 1: # force
             graph_forces(func_data[0])
         if choice == 2: # displacement
