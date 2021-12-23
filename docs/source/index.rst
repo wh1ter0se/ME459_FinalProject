@@ -13,7 +13,10 @@ Indices and tables
 * :ref:`search`
 * `FEAFunctions.py`
 * `Bodies.py`
-
+* `LiveInterface.py`
+* `FileInterface.py`
+* `GraphingUtils.py`
+* `PerformanceTest.py`
 
 FEAFunctions.py
 ================
@@ -147,3 +150,75 @@ summary()
 **********
 
    Prints the summary from the superclass. Prints the base width and height.
+
+
+
+LiveInterface.py
+==================
+
+get_modulus()
+--------------
+
+   Allows the user to either pick a material from the list of known materials or enter
+   their own modulus of elasticity.
+   
+   Returns:
+      * The selected or inputted modulus of elasticity
+
+get_workpiece()
+----------------
+
+   Generates and returns a workpiece using user input
+
+   Returns:
+      * The finished workpiece with user-input values
+
+get_function()
+---------------
+
+   Allows the user to select one of the FEA functions to run
+
+   Returns:
+      * Function that user selects
+
+run_FEA_func()
+---------------
+
+   Given a function from the FEAFunctions.py file and a workpiece, calculates said function.
+   User input is prompted for any further values needed for the calculation.
+
+   Args:
+      * func: the FEA function to run
+      * workpiece: the workpiece to run the FEA equation on
+
+main()
+-------
+
+   Runs the live interface when the file is run.
+
+
+
+FileInterface.py
+==================
+
+GraphingUtils.py
+=================
+
+PerformanceTest.py
+===================
+
+test_MultipleAxialTension()
+---------------------------
+
+   Runs FEA.Solve_MultipleAxialTension at each of the node counts given.
+
+   Args:
+      * n_list: list of all node counts to find the run time for
+
+   Returns:
+      * list of runtime values (in ms) for each node count given
+
+main()
+--------
+
+   Runs test_MultipleAxialTension with an example set of parameters, then plots the result.
