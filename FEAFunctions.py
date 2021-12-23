@@ -55,7 +55,7 @@ def strain_to_stress(stress,modulus):
 # This is from the first simple example
 # Solves setup given EITHER force (N) or displacement (m)
 # Force and displacement are both numpy column vectors
-def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
+def Solve_SimpleAxialTension(workpiece,force=None,displacement=None,verbose=True):
     coeff = (workpiece.area * workpiece.modulus) / workpiece.length # P = (AE / L)(delta)
     stiffness = (np.eye(2) * 2) - 1.0
     stiffness *= coeff
@@ -77,8 +77,9 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
         print("No force/displacement given")
         return
 
-    print_forces(force_col)
-    print_displacements(displacement_col)
+    if verbose:
+        print_forces(force_col)
+        print_displacements(displacement_col)
     strain = disp_to_strain(displacement_col,workpiece.length)
     stress = strain_to_stress(strain,workpiece.modulus)
     return [force_col,displacement_col,strain,stress]
@@ -86,7 +87,7 @@ def Solve_SimpleAxialTension(workpiece,force=None,displacement=None):
 # Allows you to solve for local/global displacement, given pairs of locations and forces.
 # The area is assumed to be the same along the entire piece.
 # force_pos_pairs is an array of (node,force) tuples. Positive force = tension.
-def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
+def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes,verbose=True):
     node_length = workpiece.length / (nodes*(.5*(nodes-1))) # why does this line work? couldn't tell you.
     coeff = (workpiece.area * workpiece.modulus) / node_length
     local_stiffness = (np.eye(2) * 2) - 1.0
@@ -118,8 +119,9 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
             #displacements[i] = 0
         #if sum(forces[i:]) == 0:
             #displacements[i] = 0
-    print_forces(forces.T[0])
-    print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
+    if verbose:
+        print_forces(forces.T[0])
+        print_displacements(displacements.T[0],global_displacement=sum(displacements.T[0]))
     # TODO add a function to print stress/strain
     strain = disp_to_strain(displacements.T[0],workpiece.length)
     stress = strain_to_stress(strain,workpiece.modulus)
@@ -128,7 +130,7 @@ def Solve_MultipleAxialTension(workpiece,pos_force_pairs,nodes):
 # Solves for cantilever deflection (fixed at one end, free at the other)
 # Displacement is perpendicular rather than parallel (as in tension)
 # All forces/displacements are on the free end
-def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
+def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None,verbose=True):
     coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
     stiffness = (np.eye(2) * 2) - 1.0
     stiffness *= coeff
@@ -152,43 +154,12 @@ def Solve_SimpleCantileverDeflection(workpiece,force=None,displacement=None):
         print("error in this function")
         return
 
-    print_forces(force_col)
-    print_displacements(displacement_col)
+    if verbose:
+        print_forces(force_col)
+        print_displacements(displacement_col)
     strain = disp_to_strain(displacement_col,workpiece.length)
     stress = strain_to_stress(strain,workpiece.modulus)
     return [force_col,displacement_col,strain,stress]
-
-def Solve_SimpleAxialTorsion(workpiece,torque=None,rad_displacement=None):
-    #coeff = (3 * workpiece.modulus * workpiece.I_xx) / (workpiece.length**3) # P = (3EI / L^3)(delta)
-    # TODO calculate the correct coefficient for axial displacement due to torque
-    #      this might require adding another enum in Bodies for shear modulus
-    #      it would also probably require calculating J (second polar moment of inertia)
-    #      this may or may not be worth implementing, I'm not sure. it might take too much time.
-    stiffness = (np.eye(2) * 2) - 1.0
-    stiffness *= coeff
-
-    if rad_displacement != None and torque == None: # displacement is given, solve for torque
-        rad_displacement_col = np.array([0,rad_displacement]).T # left side (Δθ_1) is pinned
-        force_col = np.matmul(stiffness,rad_displacement_col) # B = Ax
-
-    if torque != None and rad_displacement == None: # torque is given, solve for displacement
-        force_col = np.array([-torque,torque]).T # equal and opposite reaction torque
-        # stiffness is a singular matrix, so the method of least squares is needed to solve
-        rad_displacement_col = np.linalg.lstsq(stiffness,force_col,rcond=None)[0] 
-        total_displacement = abs(rad_displacement_col[0])+abs(rad_displacement_col[1])
-        rad_displacement_col = np.array([0,total_displacement]).T # left side (Δθ_1) is pinned
-
-    if torque == None and rad_displacement == None:
-        print("No force/displacement given")
-        return
-
-    if torque != None and rad_displacement != None:
-        print("error in this function")
-        return
-
-    rad_displacement_col = rad_to_deg(rad_displacement_col)
-    print_forces(force_col)
-    print_radial_displacements(rad_displacement_col)
 
 ## Function tests
 #  Results can be verified with

@@ -19,7 +19,7 @@ class Workpiece():
         print('I_yy (m^4): ' + str(self.I_yy))
 
 class Rod(Workpiece):
-    def __init__(self,modulus,radius,length,*args):
+    def __init__(self,modulus,radius,length):
         area = math.pi * (radius**2)
         I_xx = (math.pi * radius**2) / 16 # Ixx = (pi*D^2)/64
         I_yy = I_xx
@@ -31,7 +31,7 @@ class Rod(Workpiece):
         print('Radius (m): ' + str(self.radius))
 
 class SquarePrism(Workpiece):
-    def __init__(self,modulus,width,length,*args):
+    def __init__(self,modulus,width,length):
         area = width ** 2
         I_xx = (width**4) / 12 # Ixx = bh^3 / 12
         I_yy = I_xx
@@ -43,7 +43,7 @@ class SquarePrism(Workpiece):
     # print all parameters unique to this piece type
 
 class RectangularPrism(Workpiece):
-    def __init__(self,modulus,base,height,length,*args):
+    def __init__(self,modulus,base,height,length):
         area = base * height
         I_xx = (base * (height**3)) / 12 # Ixx = bh^3 / 12
         I_yy = (height * (base**3)) / 12 # Iyy = hb^3 / 12
