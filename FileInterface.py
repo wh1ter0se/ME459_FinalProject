@@ -24,6 +24,7 @@ def read_input():
     base_i = inputs[4]
     height_i = inputs[5]
     solver = inputs[6]
+    # TODO correct this file reader for multiple forces
     if solver == "MAT":
         nodes = inputs[8].count(",") + 1 
         for nodes in inputs[8]:
@@ -36,11 +37,6 @@ def read_input():
         force_i = inputs[8]
     material_i = inputs[7]
     displacement_i = inputs[9]
-    # if solver == "MAT":
-    #     x = 0
-    #     for x in force_i:
-    #         force_i[x] = float(force_i[x])
-    # else:
     if len(force_i) > 1:
         force_i = float(force_i)
     else:

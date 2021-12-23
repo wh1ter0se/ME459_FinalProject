@@ -83,11 +83,11 @@ def generator():
                 print("Not valid input. Try again.")
     elif input5 == "MAT":
         input5a = "M"
-        print("Input number of nodes [maximum of 8]")
+        print("Input number of nodes [maximum of 1024]")
         while True:
             try:
                 input5b = input(":")
-                if int(input5b) <= 8 and int(input5b) > 0:
+                if int(input5b) <= 1024 and int(input5b) > 0:
                     break
                 else:
                     print("Not valid input. Try again.")
