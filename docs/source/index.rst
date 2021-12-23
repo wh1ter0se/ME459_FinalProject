@@ -201,6 +201,9 @@ main()
 FileInterface.py
 ==================
 
+InputGenerator.py
+==================
+
 GraphingUtils.py
 =================
 
@@ -253,7 +256,7 @@ graph_timing()
       * n_list: list of all node counts used in the test
       * time_list: list of corresponding function runtimes (ms)
 
-      
+
 PerformanceTest.py
 ===================
 
