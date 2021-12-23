@@ -210,6 +210,8 @@ read_input()
    Returns:
       * Solved FEA function values for .txt input values.
 
+
+
 InputGenerator.py
 ==================
 
@@ -218,6 +220,9 @@ generator()
 
    Asks the user for a series of inputs regarding desired values to solve.
    Writes a .txt file with the inputs laid out in an organized list that is easy to read.
+
+   Returns:
+      * A .txt file into the current directory named with the type of workpiece and solver. 
 
 GraphingUtils.py
 =================
